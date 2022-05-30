@@ -1,14 +1,11 @@
-import { DataSource } from "typeorm";
-import entities from "./entities";
+import configure from '../config/config';
 
-export const AppDataSource = new DataSource({
-    type: 'postgres',
-    host: 'localhost',
-    port: '5432',
-    username: 'postgres',
-    password: 'd1k4321',
-    database: 'masjid',
-    synchronize: true,
-    logging: false,
-    entities: Object.values(entities),
+const { Sequelize } = require('sequelize');
+configure();
+
+const sequelize = new Sequelize(process.env.REACT_APP_DB_NAME, process.env.REACT_APP_DB_USERNAME, process.env.REACT_APP_DB_PASSWORD, {
+    host: process.env.REACT_APP_DB_HOST,
+    dialect: 'postgres'
 })
+
+export default sequelize;
