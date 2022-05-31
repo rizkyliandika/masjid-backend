@@ -4,7 +4,11 @@ var user = {};
 
 user.getAll = async (req, res) => {
     try {
-        const user = await models.user.findAll();
+        const user = await models.user.findAll({
+            include: [
+                { model: models.post }
+            ]
+        });
         if (user.length > 0) {
             res.status(200).json({
                 message: "Data found",

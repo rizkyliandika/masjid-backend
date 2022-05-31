@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 import db from '../connection'
+import post from './post';
 
 const user = db.define('user', {
     id: {
@@ -16,5 +17,7 @@ const user = db.define('user', {
     freezeTableName: true,
     timestamps: true
 });
+
+user.hasMany(post);
 
 export default user;
