@@ -1,6 +1,16 @@
+const bcrypt = require('bcrypt');
 import models from '../db/models/';
 
 var user = {};
+
+export const beforeCreate = (password) => {
+    const salt = bcrypt.genSaltSync();
+    return bcrypt.hashSync(password, salt)
+}
+
+export const validatePassword = (password, checkPassword) => {
+    return bcrypt.compareSync(password, checkPassword)
+}
 
 user.getAll = async (req, res) => {
     try {
@@ -51,10 +61,12 @@ user.getOne = async (req, res) => {
 }
 
 user.post = async (req, res) => {
+    let password = beforeCreate(req.body.password)
     try {
         const user = await models.user.create({
-            name: req.body.name,
-            password: req.body.password,
+            username: req.body.username,
+            fullname: req.body.fullname,
+            password: password,
             age: req.body.age,
             address: req.body.address,
             role: req.body.role
@@ -73,11 +85,12 @@ user.post = async (req, res) => {
 user.put = async (req, res) => {
     try {
         const user = await models.user.update({
-            name: req.body.name,
+            username: req.body.username,
+            fullname: req.body.fullname,
             password: req.body.password,
             age: req.body.age,
             address: req.body.address,
-            role: req.body.role
+            role: req.body.role,
         }, {
             where: {
                 id: req.params.id

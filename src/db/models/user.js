@@ -8,7 +8,8 @@ const user = db.define('user', {
         autoIncrement: true,
         primaryKey: true
     },
-    name: { type: Sequelize.STRING },
+    username: { type: Sequelize.STRING },
+    fullname: { type: Sequelize.STRING },
     password: { type: Sequelize.STRING },
     age: { type: Sequelize.INTEGER },
     address: { type: Sequelize.STRING },
@@ -18,6 +19,7 @@ const user = db.define('user', {
     timestamps: true
 });
 
-user.hasMany(post);
+user.hasMany(post, { foreignKey: 'id' });
+user.belongsTo(post, { foreignKey: 'id' })
 
 export default user;
